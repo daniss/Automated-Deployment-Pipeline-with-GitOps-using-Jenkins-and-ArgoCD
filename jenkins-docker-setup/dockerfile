@@ -1,0 +1,25 @@
+FROM jenkins/jenkins:lts
+
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+
+USER root
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    rm -rf /var/lib/apt/lists/*
+RUN usermod -aG docker jenkins
+
+USER jenkins
+
+RUN jenkins-plugin-cli --plugins \
+    git \
+    workflow-aggregator \
+    docker-workflow \
+    blueocean \
+    credentials-binding \
+    pipeline-utility-steps
+
+ENV JENKINS_USER admin
+ENV JENKINS_PASS admin
+
+EXPOSE 8080
+EXPOSE 50000
