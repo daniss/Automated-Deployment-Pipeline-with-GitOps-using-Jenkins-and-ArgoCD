@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('test') {
-            steps {
-                sh 'docker ps'
-            }
-        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/daniss/Automated-Deployment-Pipeline-with-GitOps-using-Jenkins-and-ArgoCD'
