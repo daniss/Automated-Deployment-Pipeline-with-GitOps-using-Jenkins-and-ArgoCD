@@ -1,27 +1,15 @@
 FROM jenkins/jenkins:lts
 
-# Disable the Jenkins setup wizard
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
-# Switch to root user to install Docker
 USER root
-
-# Install Docker CE
 RUN apt-get update && \
-    apt-get install -y apt-transport-https ca-certificates curl software-properties-common && \
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-    apt-get update && \
-    apt-get install -y docker-ce && \
+    apt-get install -y docker.io && \
     rm -rf /var/lib/apt/lists/*
-
-# Add the jenkins user to the docker group
 RUN usermod -aG docker jenkins
 
-# Switch back to Jenkins user
 USER jenkins
 
-# Install Jenkins plugins
 RUN jenkins-plugin-cli --plugins \
     git \
     workflow-aggregator \
@@ -30,10 +18,8 @@ RUN jenkins-plugin-cli --plugins \
     credentials-binding \
     pipeline-utility-steps
 
-# Expose Jenkins ports
+ENV JENKINS_USER admin
+ENV JENKINS_PASS admin
+
 EXPOSE 8080
 EXPOSE 50000
-
-# Set default admin credentials
-ENV JENKINS_USER=admin
-ENV JENKINS_PASS=admin
