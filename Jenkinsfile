@@ -14,10 +14,11 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                docker.withRegistry('https://index.docker.io/v2/', credentialsId: 'dockerhub') {
-                    docker.build("danios149/go-api").push('latest')
+                script {
+                    docker.withRegistry('https://index.docker.io/v2/', credentialsId: 'dockerhub') {
+                        docker.build("danios149/go-api").push('latest')
+                    }
                 }
-                
                 echo 'Building Docker Image...'
             }
         }
