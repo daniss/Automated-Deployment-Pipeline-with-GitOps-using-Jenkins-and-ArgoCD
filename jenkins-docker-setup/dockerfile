@@ -1,15 +1,11 @@
 FROM jenkins/jenkins:lts
 
+# Skip Docker installation and permissions adjustment
+
+# Optional: Set Jenkins to run without the setup wizard
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
-USER root
-RUN apt-get update && \
-    apt-get install -y docker.io && \
-    rm -rf /var/lib/apt/lists/*
-RUN usermod -aG docker jenkins
-
-USER jenkins
-
+# Install necessary Jenkins plugins
 RUN jenkins-plugin-cli --plugins \
     git \
     workflow-aggregator \
@@ -18,8 +14,10 @@ RUN jenkins-plugin-cli --plugins \
     credentials-binding \
     pipeline-utility-steps
 
+# Set default Jenkins user credentials
 ENV JENKINS_USER admin
 ENV JENKINS_PASS admin
 
+# Expose necessary ports
 EXPOSE 8080
 EXPOSE 50000
