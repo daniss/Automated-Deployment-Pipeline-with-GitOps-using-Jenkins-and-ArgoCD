@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     def buildname = "danios149/go-api"
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'fcb556ee-f565-41f1-9006-0cc7916f7711') {
                         docker.build(buildname).push('latest')
                     }
                 }
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     def buildname = "danios149/go-api"
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'fcb556ee-f565-41f1-9006-0cc7916f7711') {
                         sh "docker push ${buildname}:latest"
                     }
                 }
