@@ -24,7 +24,9 @@ pipeline {
         stage('Docker Build') {
             steps {
                 def buildname = "danios149/go-api"
-                sh "docker build -t ${buildname}:latest ."
+                docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                    docker.build(buildname).push('latest')
+                }
                 echo 'Building Docker Image..'
             }
         }
