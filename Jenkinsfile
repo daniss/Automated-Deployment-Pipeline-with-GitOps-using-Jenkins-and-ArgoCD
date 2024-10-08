@@ -7,14 +7,6 @@ pipeline {
                 echo 'Checking out code...'
             }
         }
-        stage('Build') {
-            steps {
-                script {
-                    sh 'cd go-api && go mod tidy && go build -o go-api'
-                }
-                echo 'Building...'
-            }
-        }
         stage('Test') {
             steps {
                 echo 'Testing...'
