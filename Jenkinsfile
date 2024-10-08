@@ -14,24 +14,11 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                script {
-                    def buildname = "danios149/go-api"
-                    docker.withRegistry('https://index.docker.io/v2/', credentialsId: 'dockerhub') {
-                        docker.build(buildname).push('latest')
-                    }
+                docker.withRegistry('https://index.docker.io/v2/', credentialsId: 'dockerhub') {
+                    docker.build("danios149/go-api").push('latest')
                 }
+                
                 echo 'Building Docker Image...'
-            }
-        }
-        stage('Docker Push') {
-            steps {
-                script {
-                    def buildname = "danios149/go-api"
-                    docker.withRegistry('https://index.docker.io/v2/', credentialsId: 'dockerhub') {
-                        sh "docker push ${buildname}:latest"
-                    }
-                }
-                echo 'Pushing Docker Image...'
             }
         }
         stage('Deploy to Minikube') {
