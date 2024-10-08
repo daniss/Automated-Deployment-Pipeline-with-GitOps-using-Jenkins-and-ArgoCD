@@ -15,10 +15,12 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
+                    cd 'go-api'
                     def buildname = "danios149/go-api"
                     docker.withRegistry('https://index.docker.io/v1/', 'fcb556ee-f565-41f1-9006-0cc7916f7711') {
                         docker.build(buildname).push('latest')
                     }
+                    cd '..'
                 }
                 echo 'Building Docker Image...'
             }
@@ -26,10 +28,12 @@ pipeline {
         stage('Docker Push') {
             steps {
                 script {
+                    cd 'go-api'
                     def buildname = "danios149/go-api"
                     docker.withRegistry('https://index.docker.io/v1/', 'fcb556ee-f565-41f1-9006-0cc7916f7711') {
                         sh "docker push ${buildname}:latest"
                     }
+                    cd '..'
                 }
                 echo 'Pushing Docker Image...'
             }
