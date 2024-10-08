@@ -12,6 +12,7 @@ pipeline {
                 cd 'go-api'
                 sh 'go mod tidy'
                 sh 'go build -o go-api'
+                cd '..'
                 echo 'Building..'
             }
         }
@@ -36,8 +37,12 @@ pipeline {
                 echo 'Deploying....'
             }
         }
-        stage('Deploy') {
+        stage('Deploy to minikube') {
             steps {
+                sh 'kubectl apply -f k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/service.yaml'
+
+                sh 'kubectl rollout status deployment/go-api'
                 echo 'Deploying to Kubernetes..'
             }
         }
